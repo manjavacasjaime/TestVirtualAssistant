@@ -7,6 +7,9 @@ import calendar
 import random
 import wikipedia
 
+from wmi import WMI
+from pynput.keyboard import Key, Controller
+
 
 #ignore warnings
 warnings.filterwarnings('ignore')
@@ -126,11 +129,25 @@ while True:
             get_date = getDate()
             response = response + ' ' + get_date
 
-
         if 'time' in text:
             get_time = getTime()
             response = response + ' ' + get_time
 
+        #opens valorant and logs in
+        if 'open' in text and 'Game 1' in text:
+            os.system('"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Riot Games\VALORANT.lnk"')
+            keyboard = Controller()
+            f = WMI()
+
+            for process in f.Win32_Process(): #parece que valorant se encuentra como de
+                if process.Name == 'RiotClientUx.exe':#los primeros en la lista
+                    keyboard.type('user')#     y la lista es infinita
+                    keyboard.press(Key.tab)
+                    keyboard.type('pass')
+                    keyboard.press(Key.enter)
+                    break
+
+            print('finished')
 
         if 'who is' in text:
             person = getPerson(text)
