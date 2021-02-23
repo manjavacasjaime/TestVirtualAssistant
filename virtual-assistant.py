@@ -9,6 +9,8 @@ import wikipedia
 
 from wmi import WMI
 from pynput.keyboard import Key, Controller
+from playsound import playsound
+import subprocess
 
 
 #ignore warnings
@@ -44,7 +46,7 @@ def assistantResponse(text):
     myobj = gTTS(text= text, lang= 'en', slow= False)
     myobj.save('assistant_response.mp3')
 
-    os.system('start assistant_response.mp3')
+    playsound('assistant_response.mp3')
 
 
 
@@ -117,6 +119,28 @@ def getWiki(person, sentences_num):
 
 
 
+#opens valorant and logs in
+def openGame1():
+    subprocess.Popen('cd C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Riot Games & VALORANT.lnk', shell= True)
+    keyboard = Controller()
+    f = WMI()
+    flag = True
+
+    while flag:
+        for process in f.Win32_Process():
+            if process.Name == 'RiotClientUx.exe':
+                flag = False
+                break
+
+    keyboard.type('user')
+    keyboard.press(Key.tab)
+    keyboard.type('pass')
+    keyboard.press(Key.enter)
+    keyboard.release(Key.enter)
+
+    return 'Opened.'
+
+
 #the real program starts here
 while True:
     text = recordAudio()
@@ -133,21 +157,9 @@ while True:
             get_time = getTime()
             response = response + ' ' + get_time
 
-        #opens valorant and logs in
         if 'open' in text and 'Game 1' in text:
-            os.system('"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Riot Games\VALORANT.lnk"')
-            keyboard = Controller()
-            f = WMI()
-
-            for process in f.Win32_Process(): #parece que valorant se encuentra como de
-                if process.Name == 'RiotClientUx.exe':#los primeros en la lista
-                    keyboard.type('user')#     y la lista es infinita
-                    keyboard.press(Key.tab)
-                    keyboard.type('pass')
-                    keyboard.press(Key.enter)
-                    break
-
-            print('finished')
+            open_game1 = openGame1()
+            response = response + ' ' + open_game1
 
         if 'who is' in text:
             person = getPerson(text)
@@ -156,8 +168,6 @@ while True:
 
 
         assistantResponse(response)
-
-
 
 
 
