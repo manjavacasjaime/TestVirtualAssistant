@@ -41,18 +41,21 @@ def recordAudio():
 #creates audio from text string
 def assistantResponse(text):
     print(text)
+    if os.path.exists('assistant_response.mp3'):
+        os.remove('assistant_response.mp3')
 
     #lang is language
     myobj = gTTS(text= text, lang= 'en', slow= False)
     myobj.save('assistant_response.mp3')
 
     playsound('assistant_response.mp3')
+    os.remove('assistant_response.mp3')
 
 
 
 #returns true if text string is a wake word
 def wakeWord(text):
-    WAKE_WORDS = ['hey computer', 'okay computer']
+    WAKE_WORDS = ['fred']
     text = text.lower()
 
     for phrase in WAKE_WORDS:
@@ -85,6 +88,14 @@ def getTime():
     time = now.strftime("%H:%M %p")
 
     return 'It is ' + time + '.'
+
+
+
+#returns today's weather
+def getWeather():
+
+
+    return ''
 
 
 
@@ -157,6 +168,10 @@ while True:
             get_time = getTime()
             response = response + ' ' + get_time
 
+        if 'morning' in text or 'weather' in text:
+            get_weather = getWeather()
+            response = response + ' ' + get_weather
+
         if 'open' in text and 'Game 1' in text:
             open_game1 = openGame1()
             response = response + ' ' + open_game1
@@ -167,7 +182,8 @@ while True:
             response = response + ' ' + wiki
 
 
-        assistantResponse(response)
+        if response:
+            assistantResponse(response)
 
 
 
