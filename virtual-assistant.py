@@ -17,7 +17,7 @@ import subprocess
 warnings.filterwarnings('ignore')
 
 #records audio and returns a string
-def recordAudio():
+def record_audio():
     r = sr.Recognizer()
 
     #start recording mic
@@ -39,7 +39,7 @@ def recordAudio():
 
 
 #creates audio from text string
-def assistantResponse(text):
+def assistant_response(text):
     print(text)
     if os.path.exists('assistant_response.mp3'):
         os.remove('assistant_response.mp3')
@@ -54,7 +54,7 @@ def assistantResponse(text):
 
 
 #returns true if text string is a wake word
-def wakeWord(text):
+def wake_word(text):
     WAKE_WORDS = ['fred']
     text = text.lower()
 
@@ -67,7 +67,7 @@ def wakeWord(text):
 
 
 #get the current date
-def getDate():
+def get_date():
     now = datetime.datetime.now()
     weekday = calendar.day_name[now.weekday()]
     month_num = now.month
@@ -83,7 +83,7 @@ def getDate():
 
 
 #returns the current time
-def getTime():
+def get_time():
     now = datetime.datetime.now()
     time = now.strftime("%H:%M %p")
 
@@ -92,7 +92,7 @@ def getTime():
 
 
 #returns today's weather
-def getWeather():
+def get_weather():
 
 
     return ''
@@ -113,7 +113,7 @@ def greeting(text):
 
 
 #gets person first and last name from text: ..... who is blah blah
-def getPerson(text):
+def get_person(text):
     wordList = text.split()
 
     for i in range(0, len(wordList)):
@@ -123,7 +123,7 @@ def getPerson(text):
 
 
 #get sentences_num first lines of persons wiki page
-def getWiki(person, sentences_num):
+def get_wiki(person, sentences_num):
     wiki = wikipedia.summary(person, sentences= sentences_num, auto_suggest=False)
 
     return wiki
@@ -131,7 +131,7 @@ def getWiki(person, sentences_num):
 
 
 #opens valorant and logs in
-def openGame1():
+def open_game1():
     subprocess.Popen('cd C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Riot Games & VALORANT.lnk', shell= True)
     keyboard = Controller()
     f = WMI()
@@ -154,36 +154,36 @@ def openGame1():
 
 #the real program starts here
 while True:
-    text = recordAudio()
+    text = record_audio()
     response = ''
 
-    if wakeWord(text):
+    if wake_word(text):
         response = response + greeting(text)
 
         if 'date' in text:
-            get_date = getDate()
+            get_date = get_date()
             response = response + ' ' + get_date
 
         if 'time' in text:
-            get_time = getTime()
+            get_time = get_time()
             response = response + ' ' + get_time
 
         if 'morning' in text or 'weather' in text:
-            get_weather = getWeather()
+            get_weather = get_weather()
             response = response + ' ' + get_weather
 
         if 'open' in text and 'Game 1' in text:
-            open_game1 = openGame1()
+            open_game1 = open_game1()
             response = response + ' ' + open_game1
 
         if 'who is' in text:
-            person = getPerson(text)
-            wiki = getWiki(person, 2)
+            person = get_person(text)
+            wiki = get_wiki(person, 2)
             response = response + ' ' + wiki
 
 
         if response:
-            assistantResponse(response)
+            assistant_response(response)
 
 
 
